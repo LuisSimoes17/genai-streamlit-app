@@ -9,5 +9,5 @@ class BaseProviderSettings(BaseSettings):
     max_tokens: Optional[int] = None
 
 class OllamaSettings(BaseProviderSettings):
-    default_model: str = "gemma3"
+    default_model: str = "gemma:2b"
     embedding_model: str = "llama3.2"

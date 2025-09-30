@@ -3,3 +3,7 @@
 
 # Environment variables
 .env
+
+# python classes
+__pycache__/
+*.pyc

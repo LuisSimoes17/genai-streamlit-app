@@ -1,7 +1,7 @@
 import ollama
 
-from config.llm_settings import OllamaSettings
-from core.llm.base_provider import BaseProvider
+from models.settings import OllamaSettings
+from models.base_provider import BaseProvider
 
 
 class OllamaProvider(BaseProvider):

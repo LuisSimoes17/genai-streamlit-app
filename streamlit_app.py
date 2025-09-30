@@ -4,7 +4,10 @@ from dotenv import load_dotenv
 import os
 import streamlit as st
 
+import asyncio
+
 from models.ollama import OllamaProvider
+from models.settings import OllamaSettings
 
 @st.cache_data
 def get_response(user_prompt, temperature):
@@ -29,7 +32,8 @@ load_dotenv()
 #)
 
 # intializa Ollama class
-ollama_object = OllamaProvider()
+settings = OllamaSettings()
+ollama_object = OllamaProvider(settings)
 
 
 st.title("Hello, GenAI!")
@@ -52,6 +56,7 @@ with st.spinner("Generating response..."):
     # make a request to the Perplexity API
     #response = get_response(user_prompt, temperature)
     ollama_object.settings.temperature = temperature
-    response = ollama_object.chat(user_prompt)
+    response = asyncio.run(ollama_object.chat(user_prompt))
     # print the response in the Streamlit app
-    st.write(response.choices[0].message.content)
+    #st.write(response.choices[0].message.content)
+    st.write(response)
