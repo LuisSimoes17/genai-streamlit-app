@@ -1,11 +1,10 @@
 # import packages
 from dotenv import load_dotenv
-import openai
+#import openai
 import os
 import streamlit as st
 
-from ollama import chat
-from ollama import ChatResponse
+from models.ollama import OllamaProvider
 
 @st.cache_data
 def get_response(user_prompt, temperature):
@@ -21,13 +20,17 @@ def get_response(user_prompt, temperature):
 
 # load environment variables from .env file
 load_dotenv()
-perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
+#perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
 
 # initalize OpenAI client
-client = openai.OpenAI(
-    api_key=perplexity_api_key,
-    base_url="https://api.perplexity.ai"
-)
+#client = openai.OpenAI(
+#    api_key=perplexity_api_key,
+#    base_url="https://api.perplexity.ai"
+#)
+
+# intializa Ollama class
+ollama_object = OllamaProvider()
+
 
 st.title("Hello, GenAI!")
 st.write("This is a simple Streamlit app using GPT-4o via Perplexity API.")
@@ -47,6 +50,8 @@ temperature = st.slider(
 
 with st.spinner("Generating response..."):
     # make a request to the Perplexity API
-    response = get_response(user_prompt, temperature)
+    #response = get_response(user_prompt, temperature)
+    ollama_object.settings.temperature = temperature
+    response = ollama_object.chat(user_prompt)
     # print the response in the Streamlit app
     st.write(response.choices[0].message.content)
