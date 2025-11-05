@@ -9,6 +9,7 @@ import asyncio
 from models.ollama import OllamaProvider
 from models.settings import OllamaSettings
 
+'''
 @st.cache_data
 def get_response(user_prompt, temperature):
     response = client.chat.completions.create(
@@ -20,9 +21,11 @@ def get_response(user_prompt, temperature):
             max_tokens=100
         )
     return response
+'''
 
 # load environment variables from .env file
 load_dotenv()
+
 #perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
 
 # initalize OpenAI client
