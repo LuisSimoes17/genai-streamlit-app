@@ -9,7 +9,21 @@ class OllamaProvider(BaseProvider):
 
     def __init__(self, settings: OllamaSettings) -> None:
         self.settings = settings
-        self.client = ollama.AsyncClient(host=settings.host if hasattr(settings, 'host') else None)
+        
+        # Setup client with optional host and API key
+        client_kwargs = {}
+        
+        # for local Ollama, host is None and defaults to http://localhost:11434
+        # for Ollama Cloud, host should be set to https://ollama.com and API key must be provided
+        if settings.host:
+            client_kwargs['host'] = settings.host
+            
+        if settings.api_key:
+            client_kwargs['headers'] = {
+                'Authorization': f'Bearer {settings.api_key}'
+            }
+        
+        self.client = ollama.AsyncClient(**client_kwargs)
 
     async def chat(self, prompt: str) -> str:
         """Send a chat completion request to Ollama."""
@@ -40,5 +54,6 @@ class OllamaProvider(BaseProvider):
         return {
             'model': self.settings.default_model,
             'temperature': self.settings.temperature,
-            'max_tokens': self.settings.max_tokens
+            'max_tokens': self.settings.max_tokens,
+            'host': self.settings.host or 'local',
         }
